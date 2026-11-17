@@ -7,9 +7,9 @@ This repository hosts public distribution metadata and website tooling. BANG TV 
 - Live manifest: https://raw.githubusercontent.com/nccablhoe/bang-tv-downloads/main/update.json
 - Stable direct APK endpoint after the first approved release: https://github.com/nccablhoe/bang-tv-downloads/releases/latest/download/BANG-TV.apk
 
-The initial manifest explicitly reports `releaseAvailable: false`. No disposable/debug APK is published. The direct APK endpoint cannot download an app until the first compatible signed release is approved.
+Current published release: **0.10.0 (versionCode 24)**. The original-key, non-debuggable APK passed integrity and original-certificate checks and a cloud in-place upgrade from build 22. The permanent APK URL and manifest were anonymously downloaded and their exact size/SHA-256 verified. No disposable-signer validation APK is published.
 
-The installation page reads the live manifest instead of hardcoding a version. APK URLs in manifests are immutable versioned release assets. A future Downloader code should point to the permanent installation page and must be verified against a real APK before being distributed.
+The installation page reads the live manifest instead of hardcoding a version. APK URLs in manifests are immutable versioned release assets. The Downloader code will point to the permanent direct APK endpoint (`releases/latest/download/BANG-TV.apk`) and must be verified against the real APK before distribution. The official shortener CAPTCHA is pending; no numeric code is claimed yet.
 
 Release workflow: stage the original-key signed APK as `BANG-TV.apk` in a draft release; commit an owner-reviewed `approved.json` binding its source, certificate, version, byte size and SHA-256; manually run Publish approved release behind the `bang-tv-public-release` environment approval. GitHub exposes draft releases only to push-capable tokens, so the environment gates validation before its short-lived contents-write token is issued. Publication depends on successful validation and revalidates the same staged bytes and unchanged approval commit. No source push triggers a release. The signer stays in its established cloud environment.
 
