@@ -1,2 +1,16 @@
-# bang-tv-downloads
-Official BANG TV APK downloads and update manifest. Application source remains private.
+# Official BANG TV downloads
+
+This repository hosts public distribution metadata and website tooling. BANG TV application source, credentials, signing keys, and user playlists are not stored here.
+
+- Website: https://nccablhoe.github.io/bang-tv-downloads/
+- Permanent installation page: https://nccablhoe.github.io/bang-tv-downloads/download/
+- Live manifest: https://raw.githubusercontent.com/nccablhoe/bang-tv-downloads/main/update.json
+- Stable direct APK endpoint after the first approved release: https://github.com/nccablhoe/bang-tv-downloads/releases/latest/download/BANG-TV.apk
+
+The initial manifest explicitly reports `releaseAvailable: false`. No disposable/debug APK is published. The direct APK endpoint cannot download an app until the first compatible signed release is approved.
+
+The installation page reads the live manifest instead of hardcoding a version. APK URLs in manifests are immutable versioned release assets. A future Downloader code should point to the permanent installation page and must be verified against a real APK before being distributed.
+
+Release workflow: stage the original-key signed APK as `BANG-TV.apk` in a draft release; commit an owner-reviewed `approved.json` binding its source, certificate, version, byte size and SHA-256; manually run Publish approved release behind the `bang-tv-public-release` environment approval. No source push triggers a release. The signer stays in its established cloud environment.
+
+GitHub Pages serves only the small website. APKs use GitHub Releases. No paid hosting, LFS, custom domain or analytics is configured.
