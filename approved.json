@@ -1,0 +1,16 @@
+{
+  "tag": "v0.10.0",
+  "versionName": "0.10.0",
+  "versionCode": 24,
+  "previousVersionCode": 22,
+  "packageName": "tv.bang.preview",
+  "sourceCommit": "c506a9c105d240c499171cdd503ac4929b7c0721",
+  "sizeBytes": 8512935,
+  "sha256": "5f6c514997e14d1710d8c8b313ad9ec29098faf081ed650b7daad0d6690be1a5",
+  "minSdk": 26,
+  "releaseNotes": "Adds App Updates in Settings with automatic checks, release notes, visible download progress, integrity and original-certificate verification, and user-approved Android installation. Keep BANG TV installed when updating to preserve playlists, favorites and settings.",
+  "mandatory": false,
+  "minimumSupportedVersionCode": 0,
+  "sourceMergeCommit": "2f7d81d9c18b3b91ecf36a941b21f38c76f7fec5",
+  "qualification": "Original-key API 30 in-place upgrade from build 22 to build 24 passed, preserving encrypted source configuration, favorites, progress and settings."
+}

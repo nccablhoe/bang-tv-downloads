@@ -9,7 +9,7 @@ async function check(){
   let response;try{response=await fetch(manifestUrl,{cache:"no-store",signal:controller?controller.signal:undefined});}finally{clearTimeout(timeout);}
   if(!response.ok)throw Error("manifest");const release=await response.json();
   if(release.schemaVersion!==1)throw Error("schema");
-  if(release.releaseAvailable===false){status.textContent="Compatible signed release coming soon";details.textContent="The download channel is ready. The first APK is awaiting its original signing key. No test APK is offered here.";return;}
+  if(release.releaseAvailable===false){status.textContent="Compatible signed release coming soon";details.textContent="The download channel is ready. The first original-key APK is completing release verification. No test APK is offered here.";return;}
   const url=new URL(release.apkUrl);
   if(url.origin!=="https://github.com" || !/^\/nccablhoe\/bang-tv-downloads\/releases\/download\/[A-Za-z0-9._-]+\/BANG-TV\.apk$/.test(url.pathname) || url.search || url.hash || url.username || url.password || !Number.isSafeInteger(release.versionCode) || release.versionCode<1 || !Number.isSafeInteger(release.sizeBytes) || release.sizeBytes<1 || !/^[a-f0-9]{64}$/i.test(release.sha256))throw Error("release");
   status.textContent="BANG TV "+release.versionName;details.textContent=(release.sizeBytes/1048576).toFixed(1)+" MB · Android API "+release.minSdk+" or newer. Choose Download APK, then approve installation.";
