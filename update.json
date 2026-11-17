@@ -1,6 +1,14 @@
 {
   "schemaVersion": 1,
-  "releaseAvailable": false,
-  "status": "qualifying-original-key-release",
-  "message": "The original BANG TV signer is recovered. The first compatible release is completing verification."
+  "releaseAvailable": true,
+  "packageName": "tv.bang.preview",
+  "versionCode": 24,
+  "versionName": "0.10.0",
+  "apkUrl": "https://github.com/nccablhoe/bang-tv-downloads/releases/download/v0.10.0/BANG-TV.apk",
+  "sha256": "5f6c514997e14d1710d8c8b313ad9ec29098faf081ed650b7daad0d6690be1a5",
+  "sizeBytes": 8512935,
+  "minSdk": 26,
+  "releaseNotes": "Adds App Updates in Settings with automatic checks, release notes, visible download progress, integrity and original-certificate verification, and user-approved Android installation. Keep BANG TV installed when updating to preserve playlists, favorites and settings.",
+  "mandatory": false,
+  "minimumSupportedVersionCode": 0
 }
