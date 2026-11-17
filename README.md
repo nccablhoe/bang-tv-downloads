@@ -11,7 +11,7 @@ The initial manifest explicitly reports `releaseAvailable: false`. No disposable
 
 The installation page reads the live manifest instead of hardcoding a version. APK URLs in manifests are immutable versioned release assets. A future Downloader code should point to the permanent installation page and must be verified against a real APK before being distributed.
 
-Release workflow: stage the original-key signed APK as `BANG-TV.apk` in a draft release; commit an owner-reviewed `approved.json` binding its source, certificate, version, byte size and SHA-256; manually run Publish approved release behind the `bang-tv-public-release` environment approval. No source push triggers a release. The signer stays in its established cloud environment.
+Release workflow: stage the original-key signed APK as `BANG-TV.apk` in a draft release; commit an owner-reviewed `approved.json` binding its source, certificate, version, byte size and SHA-256; manually run Publish approved release behind the `bang-tv-public-release` environment approval. GitHub exposes draft releases only to push-capable tokens, so the environment gates validation before its short-lived contents-write token is issued. Publication depends on successful validation and revalidates the same staged bytes and unchanged approval commit. No source push triggers a release. The signer stays in its established cloud environment.
 
 GitHub Pages serves only the small website. APKs use GitHub Releases. No paid hosting, LFS, custom domain or analytics is configured.
 

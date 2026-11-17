@@ -13,6 +13,10 @@ concurrency:
   cancel-in-progress: false
 jobs:
   validate:
+    # Draft releases require push access; gate that short-lived token before validation.
+    environment: bang-tv-public-release
+    permissions:
+      contents: write
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -61,7 +65,6 @@ jobs:
     needs: validate
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    environment: bang-tv-public-release
     permissions:
       contents: write
       actions: read
