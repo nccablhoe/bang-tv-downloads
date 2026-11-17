@@ -1,0 +1,119 @@
+name: Publish approved release
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Owner-approved stable draft release tag, for example v1.0.0'
+        type: string
+        required: true
+permissions:
+  contents: read
+concurrency:
+  group: bang-tv-public-release
+  cancel-in-progress: false
+jobs:
+  validate:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      source_sha: ${{ steps.revision.outputs.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - id: revision
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - name: Require a configured original-key policy and committed owner approval
+        env:
+          TAG: ${{ inputs.tag }}
+        run: |
+          python3 - <<'PY'
+          import json,os,re
+          assert re.fullmatch(r'v\d+\.\d+\.\d+',os.environ['TAG'])
+          p=json.load(open('signing-policy.json'))
+          assert p.get('configured') is True, 'Original BANG TV signer is not recovered'
+          assert json.load(open('approved.json'))['tag']==os.environ['TAG']
+          PY
+      - name: Verify draft and download exactly the signed candidate
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag }}
+        run: |
+          gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json isDraft,isPrerelease > release-state.json
+          python3 - <<'PY'
+          import json
+          r=json.load(open('release-state.json'))
+          assert r['isDraft'] and not r['isPrerelease'], 'An unpublished stable draft is required'
+          PY
+          gh release download "$TAG" --repo "$GITHUB_REPOSITORY" --pattern BANG-TV.apk --dir candidate
+          python3 scripts/verify-release.py candidate/BANG-TV.apk "$TAG" \
+            "$ANDROID_HOME/build-tools/35.0.0/apksigner" "$ANDROID_HOME/build-tools/35.0.0/aapt2"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: verified-public-release
+          retention-days: 1
+          path: |
+            candidate/BANG-TV.apk
+            candidate-update.json
+            candidate-sha256.txt
+  publish:
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment: bang-tv-public-release
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: true
+      - name: Prevent approval drift
+        env:
+          VERIFIED_SOURCE: ${{ needs.validate.outputs.source_sha }}
+        run: test "$(git rev-parse HEAD)" = "$VERIFIED_SOURCE"
+      - uses: actions/download-artifact@v4
+        with:
+          name: verified-public-release
+          path: verified
+      - name: Revalidate staged bytes and publish only the approved signed candidate
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag }}
+        run: |
+          gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json isDraft,isPrerelease > release-state.json
+          python3 - <<'PY'
+          import json
+          r=json.load(open('release-state.json'));assert r['isDraft'] and not r['isPrerelease']
+          PY
+          mkdir live-candidate
+          gh release download "$TAG" --repo "$GITHUB_REPOSITORY" --pattern BANG-TV.apk --dir live-candidate
+          cmp live-candidate/BANG-TV.apk verified/candidate/BANG-TV.apk
+          python3 scripts/verify-release.py live-candidate/BANG-TV.apk "$TAG" \
+            "$ANDROID_HOME/build-tools/35.0.0/apksigner" "$ANDROID_HOME/build-tools/35.0.0/aapt2"
+          cmp candidate-update.json verified/candidate-update.json
+          mkdir public-metadata
+          cp verified/candidate-update.json public-metadata/update.json
+          cp verified/candidate-sha256.txt public-metadata/BANG-TV.apk.sha256
+          gh release upload "$TAG" public-metadata/update.json public-metadata/BANG-TV.apk.sha256 --repo "$GITHUB_REPOSITORY"
+          gh release edit "$TAG" --repo "$GITHUB_REPOSITORY" --draft=false --latest
+          cp verified/candidate-update.json update.json
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add update.json
+          git commit -m "Publish approved BANG TV release $TAG"
+          git push origin HEAD:main
+      - name: Verify anonymous public APK bytes
+        env:
+          TAG: ${{ inputs.tag }}
+        run: |
+          curl --fail --location --proto '=https' --proto-redir '=https' --retry 3 --max-time 120 \
+            "https://github.com/nccablhoe/bang-tv-downloads/releases/download/$TAG/BANG-TV.apk" -o public.apk
+          python3 - <<'PY'
+          import hashlib,json,pathlib
+          m=json.load(open('update.json'))
+          p=pathlib.Path('public.apk');assert p.stat().st_size==m['sizeBytes']
+          with p.open('rb') as f:assert hashlib.file_digest(f,'sha256').hexdigest()==m['sha256']
+          PY

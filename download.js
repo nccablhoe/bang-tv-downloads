@@ -4,7 +4,9 @@ async function check(){
  const status=document.getElementById("status"),details=document.getElementById("details"),link=document.getElementById("download"),notes=document.getElementById("notes");
  link.hidden=true;notes.hidden=true;status.textContent="Checking release availability…";
  try{
-  const response=await fetch(manifestUrl,{cache:"no-store",signal:AbortSignal.timeout(15000)});
+  const controller=typeof AbortController==="function"?new AbortController():null;
+  const timeout=setTimeout(function(){if(controller)controller.abort();},15000);
+  let response;try{response=await fetch(manifestUrl,{cache:"no-store",signal:controller?controller.signal:undefined});}finally{clearTimeout(timeout);}
   if(!response.ok)throw Error("manifest");const release=await response.json();
   if(release.schemaVersion!==1)throw Error("schema");
   if(release.releaseAvailable===false){status.textContent="Compatible signed release coming soon";details.textContent="The download channel is ready. The first APK is awaiting its original signing key. No test APK is offered here.";return;}
