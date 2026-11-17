@@ -14,3 +14,7 @@ The installation page reads the live manifest instead of hardcoding a version. A
 Release workflow: stage the original-key signed APK as `BANG-TV.apk` in a draft release; commit an owner-reviewed `approved.json` binding its source, certificate, version, byte size and SHA-256; manually run Publish approved release behind the `bang-tv-public-release` environment approval. No source push triggers a release. The signer stays in its established cloud environment.
 
 GitHub Pages serves only the small website. APKs use GitHub Releases. No paid hosting, LFS, custom domain or analytics is configured.
+
+The release environment requires approval by the owner (`nccablhoe`), disallows administrator bypass, and restricts deployment to `main`. Published releases are configured immutable. The signing policy pins the original package and public certificate, independently verified against previously delivered build 22. The private signing key remains in its original cloud environment. At setup, no APK had been published; `update.json` is the current release authority.
+
+Validation: `python3 scripts/test_release.py` (10 controlled tool-output checks) and `node scripts/test_download.cjs` (4 landing-state checks). These tests do not establish Android installation compatibility.

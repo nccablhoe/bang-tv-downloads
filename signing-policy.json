@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "configured": false,
-  "packageName": null,
-  "certificateSha256": null,
-  "reason": "Awaiting original BANG TV certificate verification. No replacement or UNIFYD signer is accepted."
+  "configured": true,
+  "packageName": "tv.bang.preview",
+  "certificateSha256": "947ff52df7a35efbeb2a7a85c4d162754aa06d32ae1572cf0182c889ad81c2fa",
+  "reason": "Pinned to the original BANG TV certificate independently verified against delivered build 22. No replacement or UNIFYD signer is accepted."
 }
