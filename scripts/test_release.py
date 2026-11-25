@@ -4,11 +4,11 @@ spec=importlib.util.spec_from_file_location('release',pathlib.Path(__file__).wit
 class ReleaseTests(unittest.TestCase):
  def setUp(self):
   self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup);self.apk=pathlib.Path(self.temp.name)/'app.apk';self.apk.write_bytes(b'fixture only, not an APK')
-  self.policy=dict(configured=True,packageName='tv.bang.preview',certificateSha256='b'*64)
-  self.approval=dict(tag='v1.0.0',versionName='1.0.0',versionCode=24,previousVersionCode=22,packageName='tv.bang.preview',sourceCommit='a'*40,sizeBytes=self.apk.stat().st_size,sha256=hashlib.sha256(self.apk.read_bytes()).hexdigest(),minSdk=26,releaseNotes='Fixes')
+  self.policy=dict(configured=True,packageName='tv.bang.next',certificateSha256='b'*64)
+  self.approval=dict(tag='v1.0.0',versionName='1.0.0',versionCode=24,previousVersionCode=22,packageName='tv.bang.next',sourceCommit='a'*40,sizeBytes=self.apk.stat().st_size,sha256=hashlib.sha256(self.apk.read_bytes()).hexdigest(),minSdk=26,releaseNotes='Fixes')
   self.current=dict(releaseAvailable=False)
  def run_gate(self,cert=None,badging=None):
-  def tool(args,**kw):return types.SimpleNamespace(stdout=('Signer #1 certificate SHA-256 digest: '+(cert or 'b'*64)+'\n') if args[0]=='signer' else (badging or "package: name='tv.bang.preview' versionCode='24' versionName='1.0.0'\nminSdkVersion:'26'\n"))
+  def tool(args,**kw):return types.SimpleNamespace(stdout=('Signer #1 certificate SHA-256 digest: '+(cert or 'b'*64)+'\n') if args[0]=='signer' else (badging or "package: name='tv.bang.next' versionCode='24' versionName='1.0.0'\nminSdkVersion:'26'\n"))
   with patch.object(m.subprocess,'run',side_effect=tool):return m.verify(self.apk,self.approval,self.policy,self.current,'v1.0.0','signer','aapt2')
  def test_valid_manifest(self):
   result=self.run_gate();self.assertTrue(result['releaseAvailable']);self.assertFalse(result['mandatory']);self.assertEqual(result['sha256'],self.approval['sha256'])
@@ -27,7 +27,7 @@ class ReleaseTests(unittest.TestCase):
   self.approval['versionName']='1.0.0-preview'
   with self.assertRaises(ValueError):self.run_gate()
  def test_debug(self):
-  with self.assertRaises(ValueError):self.run_gate(badging="package: name='tv.bang.preview' versionCode='24' versionName='1.0.0'\nminSdkVersion:'26'\napplication-debuggable\n")
+  with self.assertRaises(ValueError):self.run_gate(badging="package: name='tv.bang.next' versionCode='24' versionName='1.0.0'\nminSdkVersion:'26'\napplication-debuggable\n")
  def test_downgrade(self):
   self.current=dict(releaseAvailable=True,versionCode=24)
   with self.assertRaises(ValueError):self.run_gate()

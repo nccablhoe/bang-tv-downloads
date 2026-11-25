@@ -12,7 +12,37 @@ concurrency:
   group: bang-tv-public-release
   cancel-in-progress: false
 jobs:
+  stage:
+    # Attach the owner-approved signed APK to a draft release when the draft does not exist yet.
+    # The APK comes from branch release-inputs/<tag> and must match approved.json exactly.
+    if: github.ref == 'refs/heads/main'
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Create the draft release from the approved signed APK
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag }}
+        run: |
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then echo "Release $TAG already exists"; exit 0; fi
+          git fetch origin "release-inputs/$TAG"
+          git show "FETCH_HEAD:BANG-TV.apk" > BANG-TV.apk
+          python3 - <<'PY2'
+          import hashlib,json,os,pathlib
+          a=json.load(open('approved.json'));assert a['tag']==os.environ['TAG']
+          p=pathlib.Path('BANG-TV.apk');assert p.stat().st_size==a['sizeBytes'],'size'
+          assert hashlib.sha256(p.read_bytes()).hexdigest()==a['sha256'],'sha256'
+          PY2
+          gh release create "$TAG" BANG-TV.apk --repo "$GITHUB_REPOSITORY" --draft --target main \
+            --title "BANG TV ${TAG#v}" --notes "$(python3 -c "import json;print(json.load(open('approved.json'))['releaseNotes'])")"
   validate:
+    needs: stage
     # Draft releases require push access; gate that short-lived token before validation.
     environment: bang-tv-public-release
     permissions:
@@ -102,10 +132,10 @@ jobs:
           cp verified/candidate-sha256.txt public-metadata/BANG-TV.apk.sha256
           gh release upload "$TAG" public-metadata/update.json public-metadata/BANG-TV.apk.sha256 --repo "$GITHUB_REPOSITORY"
           gh release edit "$TAG" --repo "$GITHUB_REPOSITORY" --draft=false --latest
-          cp verified/candidate-update.json update.json
+          cp verified/candidate-update.json next.json
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add update.json
+          git add next.json
           git commit -m "Publish approved BANG TV release $TAG"
           git push origin HEAD:main
       - name: Verify anonymous public APK bytes
@@ -116,7 +146,7 @@ jobs:
             "https://github.com/nccablhoe/bang-tv-downloads/releases/download/$TAG/BANG-TV.apk" -o public.apk
           python3 - <<'PY'
           import hashlib,json,pathlib
-          m=json.load(open('update.json'))
+          m=json.load(open('next.json'))
           p=pathlib.Path('public.apk');assert p.stat().st_size==m['sizeBytes']
           with p.open('rb') as f:assert hashlib.file_digest(f,'sha256').hexdigest()==m['sha256']
           PY

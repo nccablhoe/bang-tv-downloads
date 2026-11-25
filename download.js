@@ -1,5 +1,5 @@
 "use strict";
-const manifestUrl="https://raw.githubusercontent.com/nccablhoe/bang-tv-downloads/main/update.json";
+const manifestUrl="https://raw.githubusercontent.com/nccablhoe/bang-tv-downloads/main/next.json";
 async function check(){
  const status=document.getElementById("status"),details=document.getElementById("details"),link=document.getElementById("download"),notes=document.getElementById("notes");
  link.hidden=true;notes.hidden=true;status.textContent="Checking release availability…";

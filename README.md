@@ -4,10 +4,13 @@ This repository hosts public distribution metadata and website tooling. BANG TV 
 
 - Website: https://nccablhoe.github.io/bang-tv-downloads/
 - Permanent installation page: https://nccablhoe.github.io/bang-tv-downloads/download/
-- Live manifest: https://raw.githubusercontent.com/nccablhoe/bang-tv-downloads/main/update.json
+- Live manifest (new BANG TV, `tv.bang.next`): https://raw.githubusercontent.com/nccablhoe/bang-tv-downloads/main/next.json
+- Old app manifest (`tv.bang.preview`, frozen at 0.10.0 so installed copies stay quiet): https://raw.githubusercontent.com/nccablhoe/bang-tv-downloads/main/update.json
 - Stable direct APK endpoint after the first approved release: https://github.com/nccablhoe/bang-tv-downloads/releases/latest/download/BANG-TV.apk
 
-Current published release: **0.10.0 (versionCode 24)**. The original-key, non-debuggable APK passed integrity and original-certificate checks and a cloud in-place upgrade from build 22. The permanent APK URL and manifest were anonymously downloaded and their exact size/SHA-256 verified. No disposable-signer validation APK is published.
+**From 1.0.0 this channel serves the new BANG TV (`tv.bang.next`, owner decision 2026-11-25).** The Downloader code and `releases/latest/download/BANG-TV.apk` follow the newest release, so they move to the new app when 1.0.0 is published. `update.json` is no longer written; it stays at the old app's 0.10.0 so that app's updater does not offer a different package.
+
+Previous published release: **0.10.0 (versionCode 24)**, old app `tv.bang.preview`. The original-key, non-debuggable APK passed integrity and original-certificate checks and a cloud in-place upgrade from build 22. The permanent APK URL and manifest were anonymously downloaded and their exact size/SHA-256 verified. No disposable-signer validation APK is published.
 
 The installation page reads the live manifest instead of hardcoding a version. APK URLs in manifests are immutable versioned release assets. Verified Downloader code: **9286403** — https://aftv.news/9286403. It points to the permanent direct APK endpoint (`releases/latest/download/BANG-TV.apk`). The official shortener returned this code; a cloud browser followed its redirect and downloaded the exact published APK (8,512,935 bytes, matching SHA-256). Physical installation through the Downloader app has not yet been tested.
 
