@@ -1,16 +1,16 @@
 {
-  "tag": "v0.10.0",
-  "versionName": "0.10.0",
-  "versionCode": 24,
-  "previousVersionCode": 22,
-  "packageName": "tv.bang.preview",
-  "sourceCommit": "c506a9c105d240c499171cdd503ac4929b7c0721",
-  "sizeBytes": 8512935,
-  "sha256": "5f6c514997e14d1710d8c8b313ad9ec29098faf081ed650b7daad0d6690be1a5",
+  "tag": "v1.0.0",
+  "versionName": "1.0.0",
+  "versionCode": 157,
+  "previousVersionCode": 24,
+  "packageName": "tv.bang.next",
+  "sourceCommit": "98880cd0e0d92800fe0d02448a9e4a4a591d36a3",
+  "sizeBytes": 1542548,
+  "sha256": "3698e3e544cf8d88ab9601d5a555da24a3554f32b1f62fef11228e2bf7737ba9",
   "minSdk": 26,
-  "releaseNotes": "Adds App Updates in Settings with automatic checks, release notes, visible download progress, integrity and original-certificate verification, and user-approved Android installation. Keep BANG TV installed when updating to preserve playlists, favorites and settings.",
+  "releaseNotes": "The new BANG TV. Live TV with a full guide you can filter by category, Movies and Shows with cover art and details, Sports, MultiView, recordings, favorites and your own lists, themes, and a phone remote. Installs next to the older BANG TV app; set up your playlist once.",
   "mandatory": false,
   "minimumSupportedVersionCode": 0,
-  "sourceMergeCommit": "2f7d81d9c18b3b91ecf36a941b21f38c76f7fec5",
-  "qualification": "Original-key API 30 in-place upgrade from build 22 to build 24 passed, preserving encrypted source configuration, favorites, progress and settings."
+  "signedInputs": "nccablhoe/bang-tv-next release-inputs/bang-tv-1.0.0 @ 7aa6910aee72575b7b7420c4516aa09128c3760d",
+  "qualification": "CI run 157 (45631453036) on the source commit: build green, emulator tv-smoke 0 failed. Signed APK: original certificate on v2 and v3, non-debuggable, zipalign verified by the builder; certificate re-checked independently."
 }
