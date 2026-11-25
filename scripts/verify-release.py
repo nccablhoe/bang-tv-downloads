@@ -1,4 +1,7 @@
-"""Verify a staged original-key APK against the owner's committed approval."""
+"""Verify a staged original-key BANG TV (tv.bang.next) APK against the owner's committed approval.
+
+next.json is the new app's manifest. update.json stays the old tv.bang.preview 0.10.0 manifest
+so installed copies of the old app keep reporting 'up to date' instead of failing on another package."""
 import hashlib,json,pathlib,re,subprocess,sys
 
 def verify(apk,approval,policy,current,tag,apksigner,aapt2):
@@ -39,6 +42,6 @@ def verify(apk,approval,policy,current,tag,apksigner,aapt2):
 
 if __name__=='__main__':
     apk,tag,signer,aapt=sys.argv[1:]
-    manifest=verify(apk,json.load(open('approved.json')),json.load(open('signing-policy.json')),json.load(open('update.json')),tag,signer,aapt)
+    manifest=verify(apk,json.load(open('approved.json')),json.load(open('signing-policy.json')),json.load(open('next.json')),tag,signer,aapt)
     pathlib.Path('candidate-update.json').write_text(json.dumps(manifest,indent=2)+'\n')
     pathlib.Path('candidate-sha256.txt').write_text(manifest['sha256']+'  BANG-TV.apk\n')

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "configured": true,
-  "packageName": "tv.bang.preview",
+  "packageName": "tv.bang.next",
   "certificateSha256": "947ff52df7a35efbeb2a7a85c4d162754aa06d32ae1572cf0182c889ad81c2fa",
-  "reason": "Pinned to the original BANG TV certificate independently verified against delivered build 22. No replacement or UNIFYD signer is accepted."
+  "reason": "Owner decision 2026-11-23: BANG TV (tv.bang.next) customer builds are signed with the original BANG TV certificate, independently verified against delivered build 22. No development, replacement or UNIFYD signer is accepted."
 }

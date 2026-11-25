@@ -102,10 +102,10 @@ jobs:
           cp verified/candidate-sha256.txt public-metadata/BANG-TV.apk.sha256
           gh release upload "$TAG" public-metadata/update.json public-metadata/BANG-TV.apk.sha256 --repo "$GITHUB_REPOSITORY"
           gh release edit "$TAG" --repo "$GITHUB_REPOSITORY" --draft=false --latest
-          cp verified/candidate-update.json update.json
+          cp verified/candidate-update.json next.json
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add update.json
+          git add next.json
           git commit -m "Publish approved BANG TV release $TAG"
           git push origin HEAD:main
       - name: Verify anonymous public APK bytes
@@ -116,7 +116,7 @@ jobs:
             "https://github.com/nccablhoe/bang-tv-downloads/releases/download/$TAG/BANG-TV.apk" -o public.apk
           python3 - <<'PY'
           import hashlib,json,pathlib
-          m=json.load(open('update.json'))
+          m=json.load(open('next.json'))
           p=pathlib.Path('public.apk');assert p.stat().st_size==m['sizeBytes']
           with p.open('rb') as f:assert hashlib.file_digest(f,'sha256').hexdigest()==m['sha256']
           PY
