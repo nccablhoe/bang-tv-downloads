@@ -2,13 +2,13 @@
   "schemaVersion": 1,
   "releaseAvailable": true,
   "packageName": "tv.bang.next",
-  "versionCode": 157,
-  "versionName": "1.0.0",
-  "apkUrl": "https://github.com/nccablhoe/bang-tv-downloads/releases/download/v1.0.0/BANG-TV.apk",
-  "sha256": "3698e3e544cf8d88ab9601d5a555da24a3554f32b1f62fef11228e2bf7737ba9",
+  "versionCode": 163,
+  "versionName": "1.0.1",
+  "apkUrl": "https://github.com/nccablhoe/bang-tv-downloads/releases/download/v1.0.1/BANG-TV.apk",
+  "sha256": "9643bfc3f4005708f612572429dce83269f7b085c61b51355f1fd24b3d5ae9b4",
   "sizeBytes": 1542548,
   "minSdk": 26,
-  "releaseNotes": "The new BANG TV. Live TV with a full guide you can filter by category, Movies and Shows with cover art and details, Sports, MultiView, recordings, favorites and your own lists, themes, and a phone remote. Installs next to the older BANG TV app; set up your playlist once.",
+  "releaseNotes": "Phone remote: choose any TV on your Wi-Fi. The remote now lists every TV running BANG TV, marks the one you used last, and has a Switch TV button; it no longer sticks to one TV.",
   "mandatory": false,
   "minimumSupportedVersionCode": 0
 }
