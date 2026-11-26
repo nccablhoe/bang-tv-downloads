@@ -1,16 +1,16 @@
 {
-  "tag": "v1.0.0",
-  "versionName": "1.0.0",
-  "versionCode": 157,
-  "previousVersionCode": 24,
+  "tag": "v1.0.1",
+  "versionName": "1.0.1",
+  "versionCode": 163,
+  "previousVersionCode": 157,
   "packageName": "tv.bang.next",
-  "sourceCommit": "98880cd0e0d92800fe0d02448a9e4a4a591d36a3",
+  "sourceCommit": "6ec642ae9874d54fdaae5da41554ca85c06e1efc",
   "sizeBytes": 1542548,
-  "sha256": "3698e3e544cf8d88ab9601d5a555da24a3554f32b1f62fef11228e2bf7737ba9",
+  "sha256": "9643bfc3f4005708f612572429dce83269f7b085c61b51355f1fd24b3d5ae9b4",
   "minSdk": 26,
-  "releaseNotes": "The new BANG TV. Live TV with a full guide you can filter by category, Movies and Shows with cover art and details, Sports, MultiView, recordings, favorites and your own lists, themes, and a phone remote. Installs next to the older BANG TV app; set up your playlist once.",
+  "releaseNotes": "Phone remote: choose any TV on your Wi-Fi. The remote now lists every TV running BANG TV, marks the one you used last, and has a Switch TV button; it no longer sticks to one TV.",
   "mandatory": false,
   "minimumSupportedVersionCode": 0,
-  "signedInputs": "nccablhoe/bang-tv-next release-inputs/bang-tv-1.0.0 @ 7aa6910aee72575b7b7420c4516aa09128c3760d",
-  "qualification": "CI run 157 (45631453036) on the source commit: build green, emulator tv-smoke 0 failed. Signed APK: original certificate on v2 and v3, non-debuggable, zipalign verified by the builder; certificate re-checked independently."
+  "signedInputs": "nccablhoe/bang-tv-next release-inputs/bang-tv-1.0.1 @ 3e685fd691716633593455f062eb9660477ef9da",
+  "qualification": "App code identical to CI run 160 (45805417699, commit 8c164a5): build green, emulator tv-smoke passed; 6ec642a adds only a CI workflow and a doc note. Builder: 97 JVM tests passed; signed APK original certificate 947ff52d on v2/v3, non-debuggable, zipalign verified."
 }
